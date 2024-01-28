@@ -1,0 +1,64 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  #coloringGrid {
+    margin-top: 20px;
+  }
+  
+  .cell {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .cell:hover {
+    filter: brightness(80%);
+  }
+  
+  button, select, input {
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  label {
+    font-size: 18px;
+    margin-right: 10px;
+  }
+  
+  select {
+    padding: 8px;
+  }
+  
+  button,
+  #importFileLabel {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover,
+  #importFileLabel:hover {
+    background-color: #2980b9;
+  }
+  
+  input[type="file"] {
+    display: none;
+  }
