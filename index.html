@@ -1,46 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <link
+      rel="icon"
+      href="./assets/images/kleurplaat.ico"
+      type="image/x-icon"
+    />
+    <script src="./assets/js/main.js" defer></script>
+    <title>Kleurplaat</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./assets/css/styles.css">
-  <link rel="icon" href="./assets/images/kleurplaat.ico" type="image/x-icon">
-  <script src="./assets/js/main.js" defer></script>
-  <title>Kleurplaat</title>
-</head>
-
-<body>
-  <div class="menu">
-    <div>
-      <label for="colorPicker" class="colorPicker">Kies kleur:</label>
-      <select id="colorPicker" onchange="changeColor()">
-        <option value="none">Kies</option>
-        <option class="white" value="white">Wit</option>
-        <option class="red" value="red">Rood</option>
-        <option class="green" value="green">Groen</option>
-        <option class="blue" value="blue">Blauw</option>
-      </select>
+  <body>
+    <div class="menu">
+      <div>
+        <label for="colorPicker" class="colorPicker">Kies kleur:</label>
+        <select id="colorPicker" onchange="changeColor()">
+          <option value="none">Kies</option>
+          <option class="white" value="white">Wit</option>
+          <option class="red" value="red">Rood</option>
+          <option class="green" value="green">Groen</option>
+          <option class="blue" value="blue">Blauw</option>
+        </select>
+      </div>
+      <div>
+        <label for="gridWidth" class="gridWidth">Breedte:</label>
+        <input type="number" id="gridWidth" onchange="changeGridWidth()" />
+      </div>
+      <div>
+        <label for="gridHeight" class="gridHeight">Hoogte:</label>
+        <input type="number" id="gridHeight" onchange="changeGridHeight()" />
+      </div>
+      <div>
+        <label for="gridSize" class="gridSize">Grootte:</label>
+        <input type="number" id="gridSize" onchange="changeGridSize()" />
+      </div>
+      <input type="file" id="importFile" accept=".json" />
+      <label for="importFile" id="importFileLabel">Importeer JSON</label>
+      <button onclick="exportToJson()">Exporteer JSON</button>
     </div>
-    <div>
-      <label for="gridWidth" class="gridWidth">Breedte:</label>
-      <input type="number" id="gridWidth" onchange="changeGridWidth()">
-    </div>
-    <div>
-      <label for="gridHeight" class="gridHeight">Hoogte:</label>
-      <input type="number" id="gridHeight" onchange="changeGridHeight()">
-    </div>
-    <div>
-      <label for="gridSize" class="gridSize">Grootte:</label>
-      <input type="number" id="gridSize" onchange="changeGridSize()">
-    </div>    
-    <input type="file" id="importFile" accept=".json" />
-    <label for="importFile" id="importFileLabel">Importeer JSON</label>
-    <button onclick="exportToJson()">Exporteer JSON</button>
-  </div>
 
-  <div id="coloringGrid"></div>
-
-</body>
-
+    <div id="coloringGrid"></div>
+  </body>
 </html>
