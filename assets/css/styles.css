@@ -21,11 +21,14 @@ body {
   align-items: center;
 }
 
+div {
+  display: block;
+}
+
 .cell {
   width: 40px;
   height: 40px;
   display: inline-block;
-  border: #2980b9 solid 1px;
   margin: 0;
   padding: 0;
   cursor: pointer;
@@ -152,5 +155,24 @@ select:focus {
 
   .hamburger-menu.active i:before {
     content: '\00D7';
+  }
+
+  .cell {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media only screen and (min-width: 601px) {
+  .menu-item {
+    display: block !important;
+  }
+
+  .hamburger-menu {
+    display: none;
+  }
+
+  .hamburger-menu.active {
+    display: block;
   }
 }
