@@ -248,8 +248,20 @@ document.getElementById("importFile").addEventListener("change", function () {
 
 function toggleMenu() {
   const menuItems = document.querySelectorAll('.menu-item');
+  const hamburgerMenu = document.querySelector('.hamburger-menu');
 
   menuItems.forEach(item => {
     item.style.display = item.style.display === 'block' ? 'none' : 'block';
   });
+
+  // Wissel tussen het hamburger- en kruisicoon
+  if (hamburgerMenu.classList.contains('active')) {
+    hamburgerMenu.classList.remove('active');
+    // Verander naar het hamburger-icoon
+    hamburgerMenu.innerHTML = '<i class="fas fa-bars"></i>';
+  } else {
+    hamburgerMenu.classList.add('active');
+    // Verander naar het kruisicoon
+    hamburgerMenu.innerHTML = '<i class="fas fa-times"></i>';
+  }
 }
