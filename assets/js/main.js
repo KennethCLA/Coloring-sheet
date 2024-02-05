@@ -245,3 +245,11 @@ document.getElementById("importFile").addEventListener("change", function () {
     reader.readAsText(file);
   }
 });
+
+function toggleMenu() {
+  const menuItems = document.querySelectorAll('.menu-item');
+
+  menuItems.forEach(item => {
+    item.style.display = item.style.display === 'block' ? 'none' : 'block';
+  });
+}
