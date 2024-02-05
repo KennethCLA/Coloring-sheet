@@ -18,7 +18,7 @@
       <div>
         <label for="colorPicker" class="colorPicker">Kies kleur:</label>
         <select id="colorPicker" onchange="changeColor()">
-          <option value="none">Kies</option>
+          <option value="none" selected>Kies</option>
           <option class="white" value="white">Wit</option>
           <option class="red" value="red">Rood</option>
           <option class="green" value="green">Groen</option>
@@ -27,15 +27,15 @@
       </div>
       <div>
         <label for="gridWidth" class="gridWidth">Breedte:</label>
-        <input type="number" id="gridWidth" onchange="changeGridWidth()" />
+<input type="number" id="gridWidth" oninput="changeGridWidth()" />
       </div>
       <div>
         <label for="gridHeight" class="gridHeight">Hoogte:</label>
-        <input type="number" id="gridHeight" onchange="changeGridHeight()" />
+        <input type="number" id="gridHeight" oninput="changeGridHeight()" />
       </div>
       <div>
         <label for="gridSize" class="gridSize">Grootte:</label>
-        <input type="number" id="gridSize" onchange="changeGridSize()" />
+        <input type="number" id="gridSize" oninput="changeGridSize()" />
       </div>
       <input type="file" id="importFile" accept=".json" />
       <label for="importFile" id="importFileLabel">Importeer JSON</label>

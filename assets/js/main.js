@@ -1,17 +1,37 @@
-/* eslint-disable no-unused-vars */
 class ColoringApp {
-  constructor(width, height, initialGridSize) {
-    this.width = width;
-    this.height = height;
-    this.gridSize = initialGridSize;
+  constructor() {
+    this.width = 5;
+    this.height = 5;
+    this.gridSize = 5;
     this.colors = ["none", "white", "red", "green", "blue"];
     this.currentColor = "none";
+    this.gridState = new Array(this.width * this.height).fill("white");
     this.createGrid();
     this.updateGridSizeInput();
+    this.stateHistory = [];
   }
+
+  getCellColor(row, col) {
+    if (row >= 0 && row < this.height && col >= 0 && col < this.width) {
+      const index = row * this.width + col;
+      return this.gridState[index] || "white";
+    } else {
+      return "white";
+    }
+  }
+
   createGrid() {
     const grid = document.getElementById("coloringGrid");
     grid.innerHTML = "";
+
+    const cellSize = Math.min(
+      600 / this.width,
+      600 / this.height,
+      Math.floor(
+        Math.min(window.innerWidth, window.innerHeight) /
+          Math.max(this.width, this.height)
+      )
+    );
 
     for (let row = 0; row < this.height; row++) {
       const rowElement = document.createElement("div");
@@ -20,7 +40,9 @@ class ColoringApp {
       for (let col = 0; col < this.width; col++) {
         const cell = document.createElement("div");
         cell.classList.add("cell");
-        cell.style.backgroundColor = "white";
+        cell.style.backgroundColor = this.getCellColor(row, col);
+        cell.style.width = `${cellSize}px`;
+        cell.style.height = `${cellSize}px`;
         cell.addEventListener("click", () => this.handleCellClick(row, col));
         rowElement.appendChild(cell);
       }
@@ -31,23 +53,32 @@ class ColoringApp {
 
   handleCellClick(row, col) {
     const cell = this.getCellElement(row, col);
-    const huidigeKleur = cell.style.backgroundColor;
+    const currentColor = this.currentColor;
+    const index = row * this.width + col;
 
-    if (this.currentColor !== "none") {
-      const kleurNaam = this.getKleurNaam(this.currentColor);
-
-      if (huidigeKleur !== this.currentColor) {
+    if (currentColor !== "none") {
+      if (this.gridState[index] !== currentColor) {
+        const kleurNaam = this.getKleurNaam(currentColor);
         console.log(
           `Ik ben veld ${row}, ${col} en ik werd zopas ${kleurNaam} gekleurd.`
         );
-        cell.style.backgroundColor = this.currentColor;
+        cell.style.backgroundColor = currentColor;
+        this.gridState[index] = currentColor; // opslaan van kleur
       } else {
-        console.log(`Ik ben veld ${row}, ${col} en ik ben al ${kleurNaam}.`);
+        const kleurNaam = this.getKleurNaam(currentColor);
+        console.log(
+          `Ik ben veld ${row}, ${col} en ik ben al ${kleurNaam} gekleurd.`
+        );
       }
     } else {
-      const kleurNaam = this.getKleurNaam(huidigeKleur);
+      const kleurNaam = this.getKleurNaam(this.gridState[index]);
       console.log(`Ik ben veld ${row}, ${col} en ik ben ${kleurNaam}.`);
     }
+    this.stateHistory.push({
+      row,
+      col,
+      color: this.currentColor,
+    });
   }
 
   getKleurNaam(kleurCode) {
@@ -69,6 +100,13 @@ class ColoringApp {
     document.getElementById("gridWidth").value = this.width;
     document.getElementById("gridHeight").value = this.height;
     document.getElementById("gridSize").value = this.gridSize;
+  }
+
+  updateGridColors() {
+    const cells = document.getElementsByClassName("cell");
+    for (let i = 0; i < cells.length; i++) {
+      cells[i].style.backgroundColor = this.gridState[i];
+    }
   }
 
   updateWidthHeightFromSize() {
@@ -104,27 +142,36 @@ class ColoringApp {
   }
 
   exportToJson() {
+    const fileName = prompt("Voer een bestandsnaam in:");
+  
+    if (!fileName) {
+      return;
+    }
+  
     const gridData = [];
-
-    for (let row = 0; row < this.height; row++) {
-      for (let col = 0; col < this.width; col++) {
-        const cell = this.getCellElement(row, col);
+  
+    for (let row = 0; row < coloringApp.height; row++) {
+      for (let col = 0; col < coloringApp.width; col++) {
+        const cell = coloringApp.getCellElement(row, col);
         const color = cell.style.backgroundColor || "white";
         gridData.push({ row, col, color });
       }
     }
-
-    console.log(JSON.stringify(gridData, null, 2));
-
-    const blob = new Blob([JSON.stringify(gridData)], {
+  
+    const jsonString = JSON.stringify(gridData, null, 2);
+  
+    const blob = new Blob([jsonString], {
       type: "application/json",
     });
+  
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "coloringData.json";
+  
+    a.download = fileName + ".json";
+  
     a.click();
   }
-
+  
   importFromJson(jsonData) {
     const gridData = JSON.parse(jsonData);
 
@@ -140,24 +187,29 @@ class ColoringApp {
   }
 }
 
-const initialWidth = 5;
-const initialHeight = 5;
-const initialGridSize = 5;
-
-const coloringApp = new ColoringApp(
-  initialWidth,
-  initialHeight,
-  initialGridSize
-);
+const coloringApp = new ColoringApp();
 
 function changeColor() {
-  coloringApp.currentColor = document.getElementById("colorPicker").value;
+  const colorPicker = document.getElementById("colorPicker");
+  const selectedColor = colorPicker.value;
+
+  coloringApp.currentColor = selectedColor;
 }
 
 function changeGridWidth() {
+  coloringApp.stateHistory.push({
+    gridState: JSON.parse(JSON.stringify(coloringApp.gridState)),
+    color: coloringApp.currentColor,
+  });
+
   coloringApp.width = parseInt(document.getElementById("gridWidth").value, 10);
-  coloringApp.updateSizeFromWidthHeight();
   coloringApp.createGrid();
+
+  const lastState = coloringApp.stateHistory.pop();
+  coloringApp.currentColor = lastState.color;
+
+  coloringApp.gridState = lastState.gridState;
+  coloringApp.updateGridColors();
 }
 
 function changeGridHeight() {
